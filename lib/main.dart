@@ -5,9 +5,8 @@ import "package:my_team/pages/home_page.dart";
 import "package:my_team/pages/login_page.dart";
 
 void main() async{
-  // await Firebase.initializeApp(); 
-  print("harsh : done");
-  // catch(e){print("Harsh : error $e");}
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(); 
   runApp(const MyApp());
 }
 
