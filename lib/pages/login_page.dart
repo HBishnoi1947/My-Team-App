@@ -1,7 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:my_team/pages/register_page.dart';
+import 'package:my_team/service/databases_service.dart';
 import 'package:my_team/widgets/widgets.dart';
+
+import '../helper/helper_function.dart';
+import '../service/auth_service.dart';
+import 'home_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -11,12 +19,15 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final TextEditingController emailController = TextEditingController();
 
+  final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
 
+  bool _isLoading = false;
+  AuthService authService = AuthService();
+  
   @override
   Widget build(BuildContext context) {
     
@@ -61,6 +72,16 @@ class _LoginPageState extends State<LoginPage> {
                               color: Colors.white,
                             )
                           ),
+                          validator: (value) {
+                                if(value==null || value =="") {
+                                  return "Email cannot be empty";
+                                } else if(RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value)) {
+                                  return null;
+                                }
+                                else{
+                                  return "Enter Valid Email";
+                                }
+                              },
                         ),
                         const SizedBox(height: 10,),
                         TextFormField(
@@ -80,7 +101,7 @@ class _LoginPageState extends State<LoginPage> {
                           height: 45,
                           child: ElevatedButton(
                             style: elevatedButtonStyle,
-                            onPressed: () => login, 
+                            onPressed: () => login(), 
                             child: const Text("Log In", style: TextStyle(fontSize: 16),)
                             ),
                         ),
@@ -109,7 +130,32 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  login(){
+  login() async{
+    if(formKey.currentState!.validate()){
+      setState(() {
+        _isLoading = true;
+      });
+      await authService.loginUser(
+        emailController.text,
+        passwordController.text
+        ).then((value) async{
+          if(value==true){
+            // getting data from firebase
+            QuerySnapshot snapshot = await DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid).gettingUserData(emailController.text);
+            
+            // saving to shared preference state
+            await HelperFunction.saveUserLoggedInStatus(true, snapshot.docs[0]["fullName"], snapshot.docs[0]["email"]);
 
+
+            nextScreenReplace(context, const HomePage());
+          }
+          else{
+            mySnackbar(context, Colors.red, value);
+            setState(() {
+              _isLoading=false;
+            });
+          }
+        });
+    }
   }
 }

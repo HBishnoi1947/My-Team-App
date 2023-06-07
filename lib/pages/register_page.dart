@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:my_team/helper/helper_function.dart';
 import 'package:my_team/pages/home_page.dart';
 import 'package:my_team/service/auth_service.dart';
 
@@ -169,10 +170,10 @@ class _RegisterPageState extends State<RegisterPage> {
         nameController.text,
         emailController.text,
         passwordController.text
-        ).then((value) {
+        ).then((value) async{
           if(value==true){
             // saving to shared preference state
-
+            await HelperFunction.saveUserLoggedInStatus(true, nameController.text, emailController.text);
             nextScreenReplace(context, const HomePage());
           }
           else{
