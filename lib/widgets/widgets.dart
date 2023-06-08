@@ -41,3 +41,8 @@ void mySnackbar(context, color, message){
 }
 
 const myColor = Color.fromARGB(255, 181, 83, 76);
+
+
+void del(){
+  Map student = {'name':'Tom','age': 23};  
+}

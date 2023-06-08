@@ -6,6 +6,7 @@ import 'package:my_team/pages/login_page.dart';
 import 'package:my_team/pages/profile_page.dart';
 import 'package:my_team/pages/search_page.dart';
 import 'package:my_team/service/databases_service.dart';
+import 'package:my_team/widgets/group_tile.dart';
 import 'package:my_team/widgets/widgets.dart';
 
 import '../service/auth_service.dart';
@@ -18,7 +19,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String username = "", email = "";
+  String userName = "", email = "";
   AuthService authService = AuthService();
   Stream? groups;
   String groupName="";
@@ -31,7 +32,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   gettingUserData() async{
-    await HelperFunction.getUserNameKey().then((value) {if(value!=null)username=value;});
+    await HelperFunction.getUserNameKey().then((value) {if(value!=null)userName=value;});
     await HelperFunction.getUserEmailKey().then((value) {if(value!=null)email=value;});
     setState(() {});
   
@@ -39,6 +40,7 @@ class _HomePageState extends State<HomePage> {
     await DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid).getUserGroups().then((snapshot){
       setState(() {
         groups=snapshot;
+
       });
     });
   }
@@ -81,7 +83,7 @@ class _HomePageState extends State<HomePage> {
             ),
             const SizedBox(height: 15,),
             Text(
-              username,
+              userName,
               textAlign: TextAlign.center,
               style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 25),
             ),
@@ -100,7 +102,7 @@ class _HomePageState extends State<HomePage> {
             ),
             ListTile(
               onTap: (){
-                nextScreen(context, ProfilePage(username: username, email: email));
+                nextScreen(context, ProfilePage(username: userName, email: email));
               },
               contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
               leading: const Icon(Icons.person),
@@ -212,7 +214,7 @@ class _HomePageState extends State<HomePage> {
                       _isLoading = true;
                     });
                     await DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid).createGroup(
-                      username, FirebaseAuth.instance.currentUser!.uid, groupName
+                      userName, FirebaseAuth.instance.currentUser!.uid, groupName
                       ).whenComplete(() {
                         setState(() {
                           _isLoading=false;
@@ -246,7 +248,12 @@ class _HomePageState extends State<HomePage> {
             return ListView.builder(
               itemCount: snapshot.data['groups'].length,
               itemBuilder: (context,index){
-                return Text("hellop");
+                // print("harsh : ${snapshot.data['groups']}");
+                return GroupTile(
+                  userName: userName, 
+                  groupId: snapshot.data['groups'][index]["groupId"], 
+                  groupName: snapshot.data['groups'][index]["groupName"]
+                  );
               },
             );
           }

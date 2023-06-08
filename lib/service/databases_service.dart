@@ -36,7 +36,8 @@ class DatabaseService{
     DocumentReference groupDocumentReference = await groupCollection.add({
       "groupName": groupName,
       "groupIcon": "",
-      "admin": "${id}_$username",
+      // "admin": "${id}_$username",
+      "admin": <String,String>{"groupId": uid, "userName": username},
       "members": [],
       "groupId": "",
       "recentMessage": "",
@@ -45,12 +46,15 @@ class DatabaseService{
 
     // update the members
     await groupDocumentReference.update({
-      "members": FieldValue.arrayUnion(["${uid}_$groupName"]),
+      // "members": FieldValue.arrayUnion(["${uid}_$groupName"]),
+      "members": FieldValue.arrayUnion([<String,String>{"groupId": uid, "userName": username},]),
+      // "members": FieldValue.arrayUnion([uid]),
       "groupId": groupDocumentReference.id
     });
 
     await userCollection.doc(uid).update({
-      "groups": FieldValue.arrayUnion(["${groupDocumentReference.id}_$groupName"])
+      // "groups": FieldValue.arrayUnion(["${groupDocumentReference.id}_$groupName"])
+      "groups": FieldValue.arrayUnion([<String,String>{"groupId": groupDocumentReference.id, "groupName": groupName},]),
     });
   }
 }
