@@ -32,7 +32,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    print("harsh : $username");
+    // print("harsh : $username");
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 181, 83, 76),
@@ -83,7 +83,7 @@ class _HomePageState extends State<HomePage> {
             ),
             ListTile(
               onTap: (){
-                nextScreen(context, const ProfilePage());
+                nextScreen(context, ProfilePage(username: username, email: email));
               },
               contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
               leading: const Icon(Icons.person),
@@ -112,7 +112,7 @@ class _HomePageState extends State<HomePage> {
                             await authService.signoutUser();
                             Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => const LoginPage()), (route) => false);
                           },
-                          icon: const Icon(Icons.cancel),
+                          icon: const Icon(Icons.done),
                         ),
                       ],
                     );
