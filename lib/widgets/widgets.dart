@@ -39,3 +39,5 @@ void mySnackbar(context, color, message){
     duration: const Duration(seconds: 3),
   ));
 }
+
+const myColor = Color.fromARGB(255, 181, 83, 76);

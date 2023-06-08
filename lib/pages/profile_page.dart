@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_team/widgets/widgets.dart';
 
 class ProfilePage extends StatefulWidget {
   final String username,email;
@@ -14,7 +15,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: const Color.fromARGB(255, 181, 83, 76),
+        backgroundColor: myColor,
         elevation: 0,
         title: const Text(
           "Profile",
