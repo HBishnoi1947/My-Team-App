@@ -94,9 +94,30 @@ class _HomePageState extends State<HomePage> {
             ),
             ListTile(
               onTap: () async{
-                authService.signoutUser().whenComplete(() {
-                  nextScreenReplace(context, const LoginPage());
-                });
+                showDialog(
+                  context: context, 
+                  builder: (context){
+                    return AlertDialog(
+                      title: const Text("Logout"),
+                      content: const Text("Are you sure you want to logout?"),
+                      actions: [
+                        IconButton(
+                          onPressed: (){
+                            Navigator.pop(context);
+                          },
+                          icon: const Icon(Icons.cancel),
+                        ),
+                        IconButton(
+                          onPressed: ()async{
+                            await authService.signoutUser();
+                            Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => const LoginPage()), (route) => false);
+                          },
+                          icon: const Icon(Icons.cancel),
+                        ),
+                      ],
+                    );
+                  }
+                  );
               },
               contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
               leading: const Icon(Icons.logout),
