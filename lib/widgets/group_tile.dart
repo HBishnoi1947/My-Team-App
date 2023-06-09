@@ -23,7 +23,11 @@ class _GroupTileState extends State<GroupTile> {
     return Container(
         padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
         child: ListTile(
-          onTap: (){nextScreen(context, const ChatPage());},
+          onTap: (){
+            nextScreen(context, ChatPage(
+              groupId: widget.groupId, groupName: widget.groupName, userName: widget.userName
+            ));
+            },
           leading: CircleAvatar(
             radius: 30,
             backgroundColor: myColor,
