@@ -43,7 +43,9 @@ class DatabaseService{
       "groupId": "",
       "recentMessage": "",
       "recentMessageSender": "",
-      "recentMessageTime" : ""
+      "recentMessageTime" : "",
+      "todayPlaying" : "",
+      "todayNotPlaying" : ""
     });
 
     // update the members
@@ -149,5 +151,46 @@ class DatabaseService{
       "recentMessageSender": chatMessage['sender'],
       "recentMessageTime": chatMessage['time'].toString(),
     });
+  }
+
+
+  // Today Comming (IN)
+  setToIn(String groupId, Map<String,dynamic> player) async{
+    DocumentReference groupDocumentReference = groupCollection.doc(groupId);
+    await groupDocumentReference.update({
+        "todayNotPlaying": FieldValue.arrayRemove([player])
+      });
+    await groupDocumentReference.update({
+        "todayPlaying": FieldValue.arrayUnion([player])
+      });
+  }
+
+  // Today not Comming (OUT)
+  setToOut(String groupId, Map<String,dynamic> player) async{
+    DocumentReference groupDocumentReference = groupCollection.doc(groupId);
+    await groupDocumentReference.update({
+        "todayPlaying": FieldValue.arrayRemove([player])
+      });
+    await groupDocumentReference.update({
+        "todayNotPlaying": FieldValue.arrayUnion([player])
+      });
+  }
+
+  // Check Wether comming today or not 
+  checkComingOrNot(String groupId, Map<String,dynamic> player) async{
+
+    DocumentReference groupDocumentReference = groupCollection.doc(groupId);
+    DocumentSnapshot documentSnapshot = await groupDocumentReference.get();
+
+    List<dynamic> groupsPlaying  = await documentSnapshot['todayPlaying'];
+    List<dynamic> groupsNotPlaying  = await documentSnapshot['todayNotPlaying'];
+
+    if (groupsPlaying.any((element){return element==player;})){
+      return true;
+    }
+    if (groupsNotPlaying.any((element){return element==player;})){
+      return false;
+    }
+    return null;
   }
 }

@@ -123,11 +123,11 @@ class _GroupInfoState extends State<GroupInfo> {
     return StreamBuilder(
       stream: members,
       builder: (context,  snapshot){
-        if(snapshot.hasData ) print("harsh: has data");
-        else  print("harsh: no data");
+        // if(snapshot.hasData ) print("harsh: has data");
+        // else  print("harsh: no data");
 
         if(snapshot.hasData && snapshot.data["members"]!=null && snapshot.data["members"].length!=0){
-            print("Harsh : ${snapshot.data["members"].length}");
+            // print("Harsh : ${snapshot.data["members"].length}");
             return ListView.builder(
               itemCount: snapshot.data['members'].length,
               shrinkWrap: true,
@@ -150,7 +150,7 @@ class _GroupInfoState extends State<GroupInfo> {
                         ),
                       ),
                       title: Text(snapshot.data['members'][index]['userName']),
-                      subtitle: Text(snapshot.data['members'][index]['memberId']),
+                      // subtitle: Text(snapshot.data['members'][index]['memberId']),
                     ),
                   );
               },
