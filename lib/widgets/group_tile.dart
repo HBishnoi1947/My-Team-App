@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_team/pages/chat_page.dart';
+import 'package:my_team/pages/group_page.dart';
 import 'package:my_team/widgets/widgets.dart';
 
 class GroupTile extends StatefulWidget {
@@ -24,7 +25,7 @@ class _GroupTileState extends State<GroupTile> {
         padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
         child: ListTile(
           onTap: (){
-            nextScreen(context, ChatPage(
+            nextScreen(context, GroupPage(
               groupId: widget.groupId, groupName: widget.groupName, userName: widget.userName
             ));
             },

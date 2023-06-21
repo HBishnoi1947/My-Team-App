@@ -47,17 +47,17 @@ class _ChatPageState extends State<ChatPage> {
       appBar: AppBar(
         centerTitle: true,
         elevation: 0,
-        title: Text(widget.groupName),
+        title: Text("${widget.groupName} Chat"),
         backgroundColor: myColor,
-        actions: [
-          IconButton(
-            onPressed: (){nextScreen(context, GroupInfo(
-              groupId: widget.groupId, groupName: widget.groupName, adminName: admin, userName: widget.userName
-            ));}, 
-            icon: const Icon(Icons.info),
-            color: Colors.white,
-          )
-        ],
+        // actions: [
+        //   IconButton(
+        //     onPressed: (){nextScreen(context, GroupInfo(
+        //       groupId: widget.groupId, groupName: widget.groupName, adminName: admin, userName: widget.userName
+        //     ));}, 
+        //     icon: const Icon(Icons.info),
+        //     color: Colors.white,
+        //   )
+        // ],
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.end,
