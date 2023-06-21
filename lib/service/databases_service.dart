@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
+import 'package:my_team/helper/helper_function.dart';
 
 class DatabaseService{
   final String? uid;
@@ -155,24 +156,25 @@ class DatabaseService{
 
 
   // Today Comming (IN)
-  setToIn(String groupId, Map<String,dynamic> player) async{
+  setToIn(String groupId, Map<String,dynamic> player) {
     DocumentReference groupDocumentReference = groupCollection.doc(groupId);
-    await groupDocumentReference.update({
+    groupDocumentReference.update({
         "todayNotPlaying": FieldValue.arrayRemove([player])
       });
-    await groupDocumentReference.update({
+    groupDocumentReference.update({
         "todayPlaying": FieldValue.arrayUnion([player])
       });
   }
 
   // Today not Comming (OUT)
-  setToOut(String groupId, Map<String,dynamic> player) async{
+  setToOut(String groupId, Map<String,dynamic> player){
     DocumentReference groupDocumentReference = groupCollection.doc(groupId);
-    await groupDocumentReference.update({
+     groupDocumentReference.update({
         "todayPlaying": FieldValue.arrayRemove([player])
       });
-    await groupDocumentReference.update({
+      groupDocumentReference.update({
         "todayNotPlaying": FieldValue.arrayUnion([player])
+
       });
   }
 
@@ -184,11 +186,13 @@ class DatabaseService{
 
     List<dynamic> groupsPlaying  = await documentSnapshot['todayPlaying'];
     List<dynamic> groupsNotPlaying  = await documentSnapshot['todayNotPlaying'];
-
-    if (groupsPlaying.any((element){return element==player;})){
+    print("harsh (check): $player");
+    if (groupsPlaying.any((element){return mapEquals(element,player);})){
+      HelperFunction.setComingOrNot(groupId, true);
       return true;
     }
-    if (groupsNotPlaying.any((element){return element==player;})){
+    if (groupsNotPlaying.any((element){return mapEquals(element,player);})){
+      HelperFunction.setComingOrNot(groupId, false);
       return false;
     }
     return null;

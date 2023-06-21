@@ -1,6 +1,7 @@
 import "package:cloud_firestore/cloud_firestore.dart";
 import "package:firebase_auth/firebase_auth.dart";
 import "package:flutter/material.dart";
+import "package:my_team/helper/helper_function.dart";
 import "package:my_team/pages/chat_page.dart";
 
 import "../service/databases_service.dart";
@@ -27,27 +28,22 @@ class _GroupPageState extends State<GroupPage> {
   bool? coming;
   @override
   void initState() {
-    getChatAdmin();
+    getData();
     super.initState();
   }
 
-  getChatAdmin() async {
-    // DatabaseService(uid: "").checkComingOrNot(
-    //   widget.groupId,
-    //   <String,String>{
-    //   "memberId": FirebaseAuth.instance.currentUser!.uid,
-    //   "userName": widget.userName}
-    //   ).then((value){
-    //   setState(() {
-    //     print("harsh (comig): ${value}");
-    //     coming=value;
-    //   });
-    // });
-    DatabaseService(uid: "").getGroupMembers(widget.groupId).then((value){
+  getData() async{
+    
+    bool? boolComingOrNot = await HelperFunction.getComingOrNot(widget.groupId);
+    print("harsh : getData ${boolComingOrNot}");
+    if(boolComingOrNot!=null){
       setState(() {
-        inPlayers=value;
+        coming=boolComingOrNot;
       });
-    });
+    }
+    else{
+      comingOrNot();
+    }
     DatabaseService(uid: "").getGroupMembers(widget.groupId).then((value){
       setState(() {
         inPlayers=value;
@@ -58,6 +54,21 @@ class _GroupPageState extends State<GroupPage> {
         admin = val;
       });
     });
+  }
+
+
+  comingOrNot(){
+    print("harsh : function comingornot");
+    {DatabaseService(uid: "").checkComingOrNot(
+      widget.groupId,
+      <String,String>{
+      "memberId": FirebaseAuth.instance.currentUser!.uid,
+      "userName": widget.userName}
+      ).then((value){
+      setState(() {
+        coming=value;
+      });
+    });}
   }
 
   @override
@@ -115,7 +126,7 @@ class _GroupPageState extends State<GroupPage> {
                           child: Card(
                             
                             color: Colors.white54,
-                            child: todayPlaying(),
+                            child: todayPlaying("todayPlaying"),
                           ),
                         ),
                       ),
@@ -125,7 +136,7 @@ class _GroupPageState extends State<GroupPage> {
                           height: MediaQuery.sizeOf(context).height*.7,
                           child: Card(
                             color: Colors.white54,
-                            child: todaynotPlaying(),
+                            child: todayPlaying("todayNotPlaying"),
                           ),
                         ),
                       ),
@@ -179,9 +190,6 @@ class _GroupPageState extends State<GroupPage> {
                               borderRadius: BorderRadius.circular(18.0),
                             ))),
                         onPressed: () {
-                          if (coming == false) {
-                            return;
-                          }
                           DatabaseService().setToOut(
                               widget.groupId, <String, String>{
                             "memberId": FirebaseAuth.instance.currentUser!.uid,
@@ -207,14 +215,14 @@ class _GroupPageState extends State<GroupPage> {
   }
 
 
-  todayPlaying(){
+  todayPlaying(String players){
     return StreamBuilder(
       stream: inPlayers,
       builder: (context,  snapshot){
-        if(snapshot.hasData && snapshot.data["todayPlaying"]!=null && snapshot.data["todayPlaying"].length!=0){
+        if(snapshot.hasData && snapshot.data[players]!=null && snapshot.data[players].length!=0){
             // print("Harsh : ${snapshot.data["todayPlaying"].length}");
             return ListView.builder(
-              itemCount: snapshot.data['todayPlaying'].length,
+              itemCount: snapshot.data[players].length,
               shrinkWrap: true,
               itemBuilder: (context, index){
                 return Container(
@@ -232,8 +240,8 @@ class _GroupPageState extends State<GroupPage> {
                               fontWeight: FontWeight.bold),
                         ),
                       ),
-                      title: Text(snapshot.data['todayPlaying'][index]['userName'], style: TextStyle(fontSize: 18)),
-                      // subtitle: Text(snapshot.data['todayPlaying'][index]['memberId']),
+                      title: Text(snapshot.data[players][index]['userName'], style: const TextStyle(fontSize: 18)),
+                      // subtitle: Text(snapshot.data[players][index]['memberId']),
                     ),
                   );
               },
@@ -245,42 +253,42 @@ class _GroupPageState extends State<GroupPage> {
       },
     );
   }
-  todaynotPlaying(){
-    return StreamBuilder(
-      stream: outPlayers,
-      builder: (context,  snapshot){
-        if(snapshot.hasData && snapshot.data["todayNotPlaying"]!=null && snapshot.data["todayNotPlaying"].length!=0){
-            // print("Harsh : ${snapshot.data["todayNotPlaying"].length}");
-            return ListView.builder(
-              itemCount: snapshot.data['todayNotPlaying'].length,
-              shrinkWrap: true,
-              itemBuilder: (context, index){
-                return Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                    child: ListTile(
-                      leading: CircleAvatar(
-                        radius: 13,
-                        backgroundColor: myColor,
-                        child: Text(
-                          (index+1).toString(),
-                          style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 13,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      title: Text(snapshot.data['todayNotPlaying'][index]['userName'], style: TextStyle(fontSize: 18)),
-                      // subtitle: Text(snapshot.data['todayNotPlaying'][index]['memberId']),
-                    ),
-                  );
-              },
-            );
-          }
-          else{
-            return const Center(child: Text("No Players"));
-        }
-      },
-    );
-  }
+  // todaynotPlaying(){
+  //   return StreamBuilder(
+  //     stream: outPlayers,
+  //     builder: (context,  snapshot){
+  //       if(snapshot.hasData && snapshot.data["todayNotPlaying"]!=null && snapshot.data["todayNotPlaying"].length!=0){
+  //           print("Harsh : ${snapshot.data["todayNotPlaying"].length}");
+  //           return ListView.builder(
+  //             itemCount: snapshot.data['todayNotPlaying'].length,
+  //             shrinkWrap: true,
+  //             itemBuilder: (context, index){
+  //               return Container(
+  //                   padding:
+  //                       const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+  //                   child: ListTile(
+  //                     leading: CircleAvatar(
+  //                       radius: 13,
+  //                       backgroundColor: myColor,
+  //                       child: Text(
+  //                         (index+1).toString(),
+  //                         style: const TextStyle(
+  //                             color: Colors.white,
+  //                             fontSize: 13,
+  //                             fontWeight: FontWeight.bold),
+  //                       ),
+  //                     ),
+  //                     title: Text(snapshot.data['todayNotPlaying'][index]['userName'], style: const TextStyle(fontSize: 18)),
+  //                     // subtitle: Text(snapshot.data['todayNotPlaying'][index]['memberId']),
+  //                   ),
+  //                 );
+  //             },
+  //           );
+  //         }
+  //         else{
+  //           return const Center(child: Text("No Players"));
+  //       }
+  //     },
+  //   );
+  // }
 }
