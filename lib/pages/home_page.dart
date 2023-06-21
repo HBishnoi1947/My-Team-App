@@ -214,7 +214,7 @@ class _HomePageState extends State<HomePage> {
                       _isLoading = true;
                     });
                     await DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid).createGroup(
-                      userName, FirebaseAuth.instance.currentUser!.uid, groupName
+                      userName, FirebaseAuth.instance.currentUser!.uid, groupName.trim()
                       ).whenComplete(() {
                         setState(() {
                           _isLoading=false;

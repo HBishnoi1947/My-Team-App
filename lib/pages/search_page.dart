@@ -109,7 +109,7 @@ class _SearchPageState extends State<SearchPage> {
     setState(() {
       isLoading = true;
     });
-    DatabaseService().searchByName(textController.text).then((snapshot) {
+    DatabaseService().searchByName(textController.text.trim()).then((snapshot) {
       setState(() {
         serachSnapshot = snapshot;
         isLoading = false;
