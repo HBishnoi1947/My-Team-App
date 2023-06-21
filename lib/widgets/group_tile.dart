@@ -34,7 +34,7 @@ class _GroupTileState extends State<GroupTile> {
             child: Text(widget.groupName.substring(0,1).toUpperCase(), style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),)
           ),
           title: Text(widget.groupName, style: const TextStyle(fontWeight: FontWeight.bold),),
-          subtitle: Text(widget.groupName),
+          // subtitle: Text(widget.groupName),
         ),
       );
   }

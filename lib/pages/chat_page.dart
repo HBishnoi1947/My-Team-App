@@ -59,9 +59,10 @@ class _ChatPageState extends State<ChatPage> {
           )
         ],
       ),
-      body: Stack(
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          chatMessage(),
+          Expanded(child: Container(child: chatMessage(),)),
           Container(
             alignment: Alignment.bottomCenter,
             width: MediaQuery.sizeOf(context).width,
@@ -111,6 +112,7 @@ class _ChatPageState extends State<ChatPage> {
       builder: (context, snapshot){
         return snapshot.hasData?
         ListView.builder(
+          shrinkWrap: true,
           itemCount: snapshot.data!.docs.length,
           itemBuilder: (context, index) {
             return MessageTile(
@@ -120,9 +122,7 @@ class _ChatPageState extends State<ChatPage> {
               );
           },
         ):
-        Container(
-          child: Text("sdfsdff"),
-        );
+        Container();
       }
       );
   }
