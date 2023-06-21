@@ -220,8 +220,8 @@ class _HomePageState extends State<HomePage> {
                           _isLoading=false;
                         });
                       });
-                    Navigator.pop(context);
                     mySnackbar(context, Colors.green, "Group Created Successfully");
+                    Navigator.pop(context);
                   }
                   else{
         

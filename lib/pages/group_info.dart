@@ -1,14 +1,16 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:my_team/service/databases_service.dart';
 import 'package:my_team/widgets/widgets.dart';
 
 class GroupInfo extends StatefulWidget {
-  final String groupName, adminName, groupId;
+  final String groupName, adminName, groupId,userName;
   const GroupInfo({
     super.key,
     required this.groupId,
     required this.groupName,
     required this.adminName,
+    required this.userName,
     });
 
   @override
@@ -41,7 +43,32 @@ class _GroupInfoState extends State<GroupInfo> {
         title: const Text("Group Info"),
         actions: [
           IconButton(
-            onPressed: (){}, 
+            onPressed: ()async{
+              showDialog(
+                  context: context, 
+                  builder: (context){
+                    return AlertDialog(
+                      title: const Text("Exit"),
+                      content: const Text("Are you sure you want to leave the group"),
+                      actions: [
+                        IconButton(
+                          onPressed: (){
+                            Navigator.pop(context);
+                          },
+                          icon: const Icon(Icons.cancel),
+                        ),
+                        IconButton(
+                          onPressed: ()async{
+                            await DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid).toggleGroupJoin(widget.groupId, widget.userName, widget.groupName);
+                            Navigator.of(context).popUntil((route) => route.isFirst);
+                          },
+                          icon: const Icon(Icons.done),
+                        ),
+                      ],
+                    );
+                  }
+                  );
+            }, 
             icon: const Icon(Icons.exit_to_app, color: Colors.white,)
             )
         ],

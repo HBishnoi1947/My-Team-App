@@ -42,7 +42,8 @@ class DatabaseService{
       "members": [],
       "groupId": "",
       "recentMessage": "",
-      "recentMessageSender": ""
+      "recentMessageSender": "",
+      "recentMessageTime" : ""
     });
 
     // update the members
@@ -60,7 +61,7 @@ class DatabaseService{
   }
 
   getChats(String groupId) async{
-    return groupCollection.doc(groupId).collection("meassages").orderBy('time').snapshots();
+    return groupCollection.doc(groupId).collection("messages").orderBy('time').snapshots();
   }
   
   Future getGroupAdmin(String groupId) async{
@@ -138,5 +139,15 @@ class DatabaseService{
         "members": FieldValue.arrayUnion([givenUser])
       });
     }
+  }
+
+  // send Message
+  sendMessage(String groupId, Map<String,dynamic> chatMessage) async{
+    groupCollection.doc(groupId).collection("messages").add(chatMessage);
+    groupCollection.doc(groupId).update({
+      "recentMessage": chatMessage['message'],
+      "recentMessageSender": chatMessage['sender'],
+      "recentMessageTime": chatMessage['time'].toString(),
+    });
   }
 }
