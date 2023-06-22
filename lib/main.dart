@@ -4,6 +4,7 @@ import "package:my_team/helper/helper_function.dart";
 import "package:my_team/pages/first_background_page.dart";
 import "package:my_team/pages/home_page.dart";
 import "package:my_team/pages/login_page.dart";
+import "package:my_team/widgets/widgets.dart";
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,6 +31,10 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+        primaryColor: myColor,
+        primarySwatch: Colors.grey
+      ),
       home: (widget.isSignedIn==true) ? const HomePage(): const FirstBackgroundPage(),
     );
   }

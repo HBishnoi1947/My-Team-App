@@ -26,7 +26,7 @@ class _MessageTileState extends State<MessageTile> {
             ? const EdgeInsets.only(left: 30)
             : const EdgeInsets.only(right: 30),
         padding:
-            const EdgeInsets.only(top: 17, bottom: 17, left: 20, right: 20),
+            const EdgeInsets.only(top: 10, bottom: 10, left: 15, right: 15),
         decoration: BoxDecoration(
             borderRadius: widget.sentByMe
                 ? const BorderRadius.only(
