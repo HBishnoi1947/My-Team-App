@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:my_team/helper/helper_function.dart';
+import 'package:my_team/pages/first_background_page.dart';
 import 'package:my_team/pages/login_page.dart';
 import 'package:my_team/pages/profile_page.dart';
 import 'package:my_team/pages/search_page.dart';
@@ -40,7 +41,6 @@ class _HomePageState extends State<HomePage> {
     await DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid).getUserGroups().then((snapshot){
       setState(() {
         groups=snapshot;
-
       });
     });
   }
@@ -129,7 +129,7 @@ class _HomePageState extends State<HomePage> {
                         IconButton(
                           onPressed: ()async{
                             await authService.signoutUser();
-                            Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => const LoginPage()), (route) => false);
+                            Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => const FirstBackgroundPage()), (route) => false);
                           },
                           icon: const Icon(Icons.done),
                         ),
