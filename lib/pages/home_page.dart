@@ -52,111 +52,115 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     // print("harsh : $username");
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: myColor,
-        actions: [
-          IconButton(
-            onPressed: (){
-              nextScreen(context, const SearchPage());
-            }, 
-            icon: const Icon(Icons.search) 
-          )
-        ],
-        centerTitle: true,
-        elevation: 0,
-        title: const Text(
-          "Groups",
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 25),
-          ),
-
-      ),
-      drawer: Drawer(
-        backgroundColor: myColor,
-        child: ListView(
-          padding: const EdgeInsets.symmetric(vertical: 50),
-          children: [
-            const Icon(
-              Icons.account_circle,
-              size: 150,
-              color: Colors.grey,
-            ),
-            const SizedBox(height: 15,),
-            Text(
-              userName,
-              textAlign: TextAlign.center,
-              style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 25),
-            ),
-            const SizedBox(height: 30,),
-            const Divider(height: 2,),
-            ListTile(
-              onTap: (){},
-              selectedColor: Colors.black,
-              selected: true,
-              contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-              leading: const Icon(Icons.group),
-              title: const Text(
-                "Groups",
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-            ListTile(
-              onTap: (){
-                nextScreen(context, ProfilePage(username: userName, email: email));
-              },
-              contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-              leading: const Icon(Icons.person),
-              title: const Text(
-                "Profile",
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-            ListTile(
-              onTap: () async{
-                showDialog(
-                  context: context, 
-                  builder: (context){
-                    return AlertDialog(
-                      title: const Text("Logout"),
-                      content: const Text("Are you sure you want to logout?"),
-                      actions: [
-                        IconButton(
-                          onPressed: (){
-                            Navigator.pop(context);
-                          },
-                          icon: const Icon(Icons.cancel),
-                        ),
-                        IconButton(
-                          onPressed: ()async{
-                            await authService.signoutUser();
-                            Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => const FirstBackgroundPage()), (route) => false);
-                          },
-                          icon: const Icon(Icons.done),
-                        ),
-                      ],
-                    );
-                  }
-                  );
-              },
-              contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-              leading: const Icon(Icons.logout),
-              title: const Text(
-                "Logout",
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
+    return Container(
+      decoration: myBoxDecoration,
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          backgroundColor: myAppbarColor,
+          actions: [
+            IconButton(
+              onPressed: (){
+                nextScreen(context, const SearchPage());
+              }, 
+              icon: const Icon(Icons.search) 
+            )
           ],
+          centerTitle: true,
+          elevation: 0,
+          title: const Text(
+            "Groups",
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 25),
+            ),
+    
         ),
-      ),
-      body: groupList(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => popUpDialog(context),
-        elevation: 0,
-        backgroundColor: myColor,
-        child: const Icon(
-          Icons.add,
-          color: Colors.white,
-          size: 30,
+        drawer: Drawer(
+          backgroundColor: Colors.red,
+          child: ListView(
+            padding: const EdgeInsets.symmetric(vertical: 50),
+            children: [
+              const Icon(
+                Icons.account_circle,
+                size: 150,
+                color: Colors.grey,
+              ),
+              const SizedBox(height: 15,),
+              Text(
+                userName,
+                textAlign: TextAlign.center,
+                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 25),
+              ),
+              const SizedBox(height: 30,),
+              const Divider(height: 2,),
+              ListTile(
+                onTap: (){},
+                selectedColor: Colors.black,
+                selected: true,
+                contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                leading: const Icon(Icons.group),
+                title: const Text(
+                  "Groups",
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+              ListTile(
+                onTap: (){
+                  nextScreen(context, ProfilePage(username: userName, email: email));
+                },
+                contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                leading: const Icon(Icons.person),
+                title: const Text(
+                  "Profile",
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+              ListTile(
+                onTap: () async{
+                  showDialog(
+                    context: context, 
+                    builder: (context){
+                      return AlertDialog(
+                        title: const Text("Logout"),
+                        content: const Text("Are you sure you want to logout?"),
+                        actions: [
+                          IconButton(
+                            onPressed: (){
+                              Navigator.pop(context);
+                            },
+                            icon: const Icon(Icons.cancel),
+                          ),
+                          IconButton(
+                            onPressed: ()async{
+                              await authService.signoutUser();
+                              Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => const FirstBackgroundPage()), (route) => false);
+                            },
+                            icon: const Icon(Icons.done),
+                          ),
+                        ],
+                      );
+                    }
+                    );
+                },
+                contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                leading: const Icon(Icons.logout),
+                title: const Text(
+                  "Logout",
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ],
+          ),
+        ),
+        body: groupList(),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () => popUpDialog(context),
+          elevation: 0,
+          backgroundColor: myColor,
+          child: const Icon(
+            Icons.add,
+            color: Colors.white,
+            size: 30,
+          ),
         ),
       ),
     );
@@ -177,7 +181,7 @@ class _HomePageState extends State<HomePage> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 (_isLoading)? 
-            const Center(child: CircularProgressIndicator(color: myColor))
+             Center(child: CircularProgressIndicator(color: myColor))
             :
                 TextField(
                   onChanged: (val){
@@ -185,11 +189,11 @@ class _HomePageState extends State<HomePage> {
                   },
                   decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: myColor,),
+                      borderSide:  BorderSide(color: myColor,),
                       borderRadius: BorderRadius.circular(20)
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: myColor,),
+                      borderSide:  BorderSide(color: myColor,),
                       borderRadius: BorderRadius.circular(20)
                     )
                   ),

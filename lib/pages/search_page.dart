@@ -94,7 +94,7 @@ class _SearchPageState extends State<SearchPage> {
           ),
           isLoading
               ? Expanded(
-                  child: const Center(
+                  child: Center(
                   child: CircularProgressIndicator(
                     color: myColor,
                   ),

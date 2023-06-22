@@ -40,8 +40,21 @@ void mySnackbar(context, color, message){
   ));
 }
 
-const myColor = Color.fromARGB(255, 181, 83, 76);
+final myColor = Color.fromARGB(135, 243, 103, 101);
+final myGradient1 = Color.fromARGB(255, 209, 232, 252);
+final myGradient2 = Color.fromARGB(255, 255, 232, 248);
+final  myGradient3 = Color.fromARGB(193, 174, 152, 164);
+final myAppbarColor = Colors.grey.withOpacity(.4);
 
+final myBoxDecoration = BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            myGradient1, myGradient2,myGradient3
+          ]
+          )
+      );
 
 void del(){
   Map student = {'name':'Tom','age': 23};  

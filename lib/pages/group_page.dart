@@ -73,142 +73,146 @@ class _GroupPageState extends State<GroupPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        elevation: 0,
-        title: Text(widget.groupName),
-        backgroundColor: myColor,
-        actions: [
-          IconButton(
-            onPressed: () {
-              nextScreen(
-                  context,
-                  ChatPage(
-                      groupId: widget.groupId,
-                      groupName: widget.groupName,
-                      userName: widget.userName));
-            },
-            icon: const Icon(Icons.chat),
-            color: Colors.white,
-          ),
-          IconButton(
-            onPressed: () {
-              nextScreen(
-                  context,
-                  GroupInfo(
-                      groupId: widget.groupId,
-                      groupName: widget.groupName,
-                      adminName: admin,
-                      userName: widget.userName));
-            },
-            icon: const Icon(Icons.info),
-            color: Colors.white,
-          ),
-        ],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            // const Expanded(flex: 1,child: SizedBox()),
-            const SizedBox(height: 20,),
-            Expanded(
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: SizedBox(
-                          height: MediaQuery.sizeOf(context).height*.7,
-                          child: Card(
-                            
-                            color: Colors.white54,
-                            child: todayPlaying("todayPlaying"),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 2),
-                      Expanded(
-                        child: SizedBox(
-                          height: MediaQuery.sizeOf(context).height*.7,
-                          child: Card(
-                            color: Colors.white54,
-                            child: todayPlaying("todayNotPlaying"),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+    return Container(
+      decoration: myBoxDecoration,
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          centerTitle: true,
+          elevation: 0,
+          title: Text(widget.groupName),
+          backgroundColor: myAppbarColor.withOpacity(.8),
+          actions: [
+            IconButton(
+              onPressed: () {
+                nextScreen(
+                    context,
+                    ChatPage(
+                        groupId: widget.groupId,
+                        groupName: widget.groupName,
+                        userName: widget.userName));
+              },
+              icon: const Icon(Icons.chat),
+              color: Colors.white,
             ),
-            // const Expanded(flex: 1,child: SizedBox()),
-            const SizedBox(height: 20,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                SizedBox(
-                    width: MediaQuery.sizeOf(context).width * .3,
-                    height: MediaQuery.sizeOf(context).height * .06,
-                    child: ElevatedButton(
-                        style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(
-                                (coming == true) ? myColor : Colors.grey),
-                            shape: MaterialStateProperty.all<
-                                RoundedRectangleBorder>(RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18.0),
-                            ))),
-                        onPressed: () {
-                          DatabaseService().setToIn(
-                              widget.groupId, <String, String>{
-                            "memberId": FirebaseAuth.instance.currentUser!.uid,
-                            "userName": widget.userName
-                          });
-                          setState(() {
-                            coming = true;
-                          });
-                        },
-                        child: const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text(
-                            "IN",
-                            style: TextStyle(fontSize: 20),
-                          ),
-                        ))),
-                SizedBox(
-                    width: MediaQuery.sizeOf(context).width * .3,
-                    height: MediaQuery.sizeOf(context).height * .06,
-                    child: ElevatedButton(
-                        style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(
-                                (coming == false) ? myColor : Colors.grey),
-                            shape: MaterialStateProperty.all<
-                                RoundedRectangleBorder>(RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18.0),
-                            ))),
-                        onPressed: () {
-                          DatabaseService().setToOut(
-                              widget.groupId, <String, String>{
-                            "memberId": FirebaseAuth.instance.currentUser!.uid,
-                            "userName": widget.userName
-                          });
-                          setState(() {
-                            coming = false;
-                          });
-                        },
-                        child: const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text(
-                            "OUT",
-                            style: TextStyle(fontSize: 20),
-                          ),
-                        ))),
-              ],
-            )
+            IconButton(
+              onPressed: () {
+                nextScreen(
+                    context,
+                    GroupInfo(
+                        groupId: widget.groupId,
+                        groupName: widget.groupName,
+                        adminName: admin,
+                        userName: widget.userName));
+              },
+              icon: const Icon(Icons.info),
+              color: Colors.white,
+            ),
           ],
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              // const Expanded(flex: 1,child: SizedBox()),
+              const SizedBox(height: 20,),
+              Expanded(
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: SizedBox(
+                            height: MediaQuery.sizeOf(context).height*.7,
+                            child: Card(
+                              
+                              color: Colors.white54.withOpacity(.1),
+                              child: todayPlaying("todayPlaying"),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 2),
+                        Expanded(
+                          child: SizedBox(
+                            height: MediaQuery.sizeOf(context).height*.7,
+                            child: Card(
+                              color: Colors.white54.withOpacity(.2),
+                              child: todayPlaying("todayNotPlaying"),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              // const Expanded(flex: 1,child: SizedBox()),
+              const SizedBox(height: 20,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  SizedBox(
+                      width: MediaQuery.sizeOf(context).width * .3,
+                      height: MediaQuery.sizeOf(context).height * .06,
+                      child: ElevatedButton(
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(
+                                  (coming == true) ? myColor : Colors.grey),
+                              shape: MaterialStateProperty.all<
+                                  RoundedRectangleBorder>(RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(18.0),
+                              ))),
+                          onPressed: () {
+                            DatabaseService().setToIn(
+                                widget.groupId, <String, String>{
+                              "memberId": FirebaseAuth.instance.currentUser!.uid,
+                              "userName": widget.userName
+                            });
+                            setState(() {
+                              coming = true;
+                            });
+                          },
+                          child: const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Text(
+                              "IN",
+                              style: TextStyle(fontSize: 20),
+                            ),
+                          ))),
+                  SizedBox(
+                      width: MediaQuery.sizeOf(context).width * .3,
+                      height: MediaQuery.sizeOf(context).height * .06,
+                      child: ElevatedButton(
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(
+                                  (coming == false) ? myColor : Colors.grey),
+                              shape: MaterialStateProperty.all<
+                                  RoundedRectangleBorder>(RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(18.0),
+                              ))),
+                          onPressed: () {
+                            DatabaseService().setToOut(
+                                widget.groupId, <String, String>{
+                              "memberId": FirebaseAuth.instance.currentUser!.uid,
+                              "userName": widget.userName
+                            });
+                            setState(() {
+                              coming = false;
+                            });
+                          },
+                          child: const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Text(
+                              "OUT",
+                              style: TextStyle(fontSize: 20),
+                            ),
+                          ))),
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );
